@@ -1,9 +1,9 @@
+import Navbar from "../components/Navbar"
+
 const HomePage = () => {
   return (
     <>
-      <main>
-        <h2>Welcome to TickTick</h2>
-      </main>
+      <Navbar />
     </>
   )
 }

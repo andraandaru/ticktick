@@ -25,7 +25,6 @@
   "users": [
     {
       "id": 1,
-      "name": "User 1",
       "email": "test@vroom.com.au",
       "password": "frontendtest2022"
     }
