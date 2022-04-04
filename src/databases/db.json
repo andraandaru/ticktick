@@ -1,0 +1,33 @@
+{
+  "tickets": [
+    {
+      "id": 1,
+      "title": "Ticket 1",
+      "description": "This is the first ticket",
+      "status": "open",
+      "created_at": "2018-01-01T00:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "title": "Ticket 2",
+      "description": "This is the second ticket",
+      "status": "in-progress",
+      "created_at": "2018-01-01T00:00:00.000Z"
+    },
+    {
+      "id": 3,
+      "title": "Ticket 3",
+      "description": "This is the third ticket",
+      "status": "completed",
+      "created_at": "2018-01-01T00:00:00.000Z"
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "name": "User 1",
+      "email": "test@vroom.com.au",
+      "password": "frontendtest2022"
+    }
+  ]
+}
