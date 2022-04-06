@@ -1,19 +1,27 @@
+import { HomeIcon, LogoutIcon } from "@heroicons/react/outline"
+
 const Navbar = () => {
   return (
     <header>
-      <div className="bg-gradient-to-r from-cyan-500 to-blue-500">
-        <div className="container mx-auto py-3">
-          <div className="flex items-center justify-center">
-            <div className="w-3/12 uppercase text-2xl font-semibold font-logo text-yellow-50">
-              Ticktick.IO
-            </div>
-            <div className="w-9/12 flex justify-end">
-              <button className="w-auto inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-cyan-700 text-base font-medium text-white hover:bg-cyan-800 focus:outline-none focus:ring-0 focus:ring-offset-2 focus:ring-cyan-900 sm:ml-3 sm:text-sm">
-                Log Out
-              </button>
-            </div>
-          </div>
-        </div>
+      {/* // bg-gradient-to-r from-cyan-500 to-blue-500 */}
+      <div className="fixed inset-y-0 left-0 w-40 border-r-2 px-2 py-8 md:w-64 md:px-4">
+        <h1 className="text-center font-logo text-lg font-semibold uppercase text-slate-800 md:text-2xl">
+          Ticktick.IO
+        </h1>
+        <ul className="flex h-full flex-1 flex-col py-6">
+          <li className="flex cursor-pointer items-center rounded-md bg-slate-200 p-4 text-sm font-bold md:text-lg">
+            <span className="pr-2">
+              <HomeIcon className="h-4 w-4 md:h-5 md:w-5" />
+            </span>
+            Dashboard
+          </li>
+          <li className="mt-auto flex cursor-pointer items-center rounded-md border-2 border-dotted p-4 text-sm font-bold hover:bg-slate-200 md:text-lg">
+            <span className="pr-2">
+              <LogoutIcon className="h-4 w-4 md:h-5 md:w-5" />
+            </span>
+            Logout
+          </li>
+        </ul>
       </div>
     </header>
   )
