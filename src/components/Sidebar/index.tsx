@@ -1,8 +1,17 @@
 import { HomeIcon, LogoutIcon } from "@heroicons/react/outline"
-import { useAuth } from "../../hooks/useAuth"
+import { useState } from "react"
+import LogoutModal from "../Modal/LogoutModal"
 
 const Sidebar = () => {
-  const { logout } = useAuth()
+  const [isOpen, setIsOpen] = useState(false)
+
+  const handleClose = () => {
+    setIsOpen(false)
+  }
+
+  const handleOpen = () => {
+    setIsOpen(true)
+  }
 
   return (
     <header>
@@ -19,7 +28,7 @@ const Sidebar = () => {
           </li>
           <li
             className="mt-auto flex cursor-pointer items-center rounded-md border-2 border-dotted p-4 text-sm font-bold hover:bg-slate-200 md:text-lg"
-            onClick={logout}
+            onClick={handleOpen}
           >
             <span className="pr-2">
               <LogoutIcon className="h-4 w-4 md:h-5 md:w-5" />
@@ -28,6 +37,7 @@ const Sidebar = () => {
           </li>
         </ul>
       </div>
+      <LogoutModal isOpen={isOpen} handleClose={handleClose} />
     </header>
   )
 }
