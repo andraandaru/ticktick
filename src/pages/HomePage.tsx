@@ -44,7 +44,7 @@ const HomePage = () => {
             className="flex w-44 items-center justify-around rounded-md bg-blue-700 p-2 text-sm font-semibold text-slate-200 md:w-48 md:text-lg"
             onClick={onOpen}
           >
-            Add a New Ticket{" "}
+            Create Ticket
             <span>
               <PlusIcon className="h-4 w-4 " />
             </span>

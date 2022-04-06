@@ -11,7 +11,7 @@ const Card = ({ data }: CardProps) => {
       <h3 className="text-lg font-bold">{data.title}</h3>
       <div className="flex flex-col items-start space-y-2">
         <p className="text-sm">{new Date(data.updatedAt).toLocaleString()}</p>
-        <Link to={`/ticket/${data.id}`}>
+        <Link to={`/ticket/${data.id}`} state={data}>
           <button className="flex items-center justify-around rounded-md bg-blue-700 p-2 text-sm font-semibold text-slate-200">
             View Detail
           </button>

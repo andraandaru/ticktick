@@ -7,6 +7,7 @@ import { TicketFormContext } from "../../contexts/ticketForm"
 import { TicketService } from "../../services/TicketService"
 import { TicketDataTypes } from "../../types"
 import { getCurrentISOString } from "../../utils/common"
+import CircleLoading from "../Feedback/CircleLoading"
 
 const statuses: string[] = ["Open", "In Progress", "Completed"]
 
@@ -20,6 +21,7 @@ export const TicketForm = ({
   handleCloseModal?: () => void
 }) => {
   const [ticket, setTicket] = useState<TicketDataTypes>(initialData)
+  const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
 
   const onChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,6 +43,7 @@ export const TicketForm = ({
 
   const onSubmit = async () => {
     try {
+      setIsLoading(true)
       if (type === "submit") {
         const requestData = {
           title: ticket.title,
@@ -49,6 +52,7 @@ export const TicketForm = ({
           updatedAt: getCurrentISOString(),
         }
         await TicketService.createTicket(requestData)
+        setIsLoading(false)
         handleCloseModal && handleCloseModal()
       } else if (type === "update") {
         const updatedTicket = {
@@ -56,9 +60,11 @@ export const TicketForm = ({
           updatedAt: getCurrentISOString(),
         }
         await TicketService.updateTicketById(ticket.id, updatedTicket)
+        setIsLoading(false)
         navigate("/")
       }
     } catch (err) {
+      setIsLoading(false)
       throw err
     }
   }
@@ -73,7 +79,16 @@ export const TicketForm = ({
 
   return (
     <TicketFormContext.Provider
-      value={{ ticket, type, onChangeTitle, onChangeDesc, onChangeStatus, onSubmit, onClose }}
+      value={{
+        ticket,
+        type,
+        onChangeTitle,
+        onChangeDesc,
+        onChangeStatus,
+        onSubmit,
+        onClose,
+        isLoading,
+      }}
     >
       <TicketFormComponent />
     </TicketFormContext.Provider>
@@ -82,9 +97,23 @@ export const TicketForm = ({
 
 const TicketFormComponent = () => {
   const ticketFormContext = useContext(TicketFormContext)
-  const { ticket, type, onSubmit, onChangeTitle, onChangeDesc, onChangeStatus, onClose } =
-    ticketFormContext
+  const {
+    ticket,
+    type,
+    onSubmit,
+    onChangeTitle,
+    onChangeDesc,
+    onChangeStatus,
+    onClose,
+    isLoading,
+  } = ticketFormContext
   const [lastTicketStatus] = useState(ticket.status)
+
+  const secondaryBtn =
+    "mt-2 w-48 rounded-md border border-transparent bg-pink-700 px-4 py-2 font-medium text-white shadow-sm hover:bg-pink-800 focus:outline-none focus:ring-1 focus:ring-pink-900 focus:ring-offset-2"
+
+  const primaryBtn =
+    "mt-2 w-48 flex items-center justify-center rounded-md border border-transparent bg-blue-700 px-4 py-2 font-medium capitalize text-white shadow-sm hover:bg-blue-800 focus:outline-none focus:ring-1 focus:ring-blue-900 focus:ring-offset-2"
 
   return (
     <Fragment>
@@ -158,17 +187,17 @@ const TicketFormComponent = () => {
         </RadioGroup>
       </div>
       <div className="mt-4 flex justify-end space-x-2">
-        <button
-          className="mt-2 w-32 rounded-md border border-transparent bg-pink-700 px-4 py-2 font-medium text-white shadow-sm hover:bg-pink-800 focus:outline-none focus:ring-1 focus:ring-pink-900 focus:ring-offset-2"
-          onClick={onClose}
-        >
+        <button className={secondaryBtn} onClick={onClose}>
           Cancel
         </button>
         <button
-          className="mt-2 w-32 rounded-md border border-transparent bg-blue-700 px-4 py-2 font-medium capitalize text-white shadow-sm hover:bg-blue-800 focus:outline-none focus:ring-1 focus:ring-blue-900 focus:ring-offset-2"
+          className={classNames(primaryBtn, {
+            "cursor-not-allowed opacity-50": isLoading,
+          })}
           onClick={onSubmit}
         >
-          {type}
+          {isLoading && <CircleLoading />}
+          {isLoading ? "Please Wait ..." : type}
         </button>
       </div>
     </Fragment>

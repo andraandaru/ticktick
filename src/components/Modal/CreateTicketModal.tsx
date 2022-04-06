@@ -19,7 +19,7 @@ const initialTicketData: TicketDataTypes = {
 
 const CreateTicketModal = ({ isOpen, handleClose }: CreateTicketModalProps) => {
   return (
-    <BaseModal title="Add a New Ticket" isOpen={isOpen} handleClose={handleClose}>
+    <BaseModal title="Create Ticket" isOpen={isOpen} handleClose={handleClose}>
       <div className="mt-2">
         <TicketForm
           initialData={initialTicketData as TicketDataTypes}

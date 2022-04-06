@@ -1,6 +1,6 @@
 import { ClipboardIcon } from "@heroicons/react/outline"
 import { useCallback, useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { useLocation, useParams } from "react-router-dom"
 import TicketForm from "../components/Form/TicketForm"
 import withAuth from "../components/HOC/withAuth"
 import BaseLayout from "../components/Layouts/BaseLayout"
@@ -9,6 +9,7 @@ import { TicketDataTypes } from "../types"
 
 const TicketDetailPage = () => {
   const { ticketId } = useParams()
+  const location = useLocation()
 
   const [ticket, setTicket] = useState<TicketDataTypes>()
 
@@ -22,7 +23,12 @@ const TicketDetailPage = () => {
   )
 
   useEffect(() => {
-    getTicketById(ticketId)
+    if (location?.state) {
+      const ticketFromState = location?.state
+      setTicket(ticketFromState as TicketDataTypes)
+    } else {
+      getTicketById(ticketId)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
