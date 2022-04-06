@@ -3,6 +3,7 @@ import { toast } from "react-toastify"
 import { USER_ENDPOINT } from "../constants/api-constants"
 import { LoginRequestDataTypes, LoginResponseDataTypes } from "../types"
 import { callToAPI } from "../utils/api"
+import bcrypt from "bcryptjs"
 
 const api = callToAPI()
 
@@ -18,7 +19,8 @@ export const AuthService = {
         throw new Error("User Not Found")
       } else {
         const user = responseData[0]
-        if (user.password === data.password) {
+        const comparedPassword = bcrypt.compareSync(data.password, user.password)
+        if (comparedPassword) {
           return user
         } else {
           toast.error("Wrong Password!")
