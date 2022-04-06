@@ -10,3 +10,24 @@ export type UserDataTypes = {
 }
 
 export type LoginResponseDataTypes = UserDataTypes[] | []
+
+export type TicketDataTypes = {
+  id: string
+  title: string
+  description: string
+  status: string
+  createdAt: string
+  updatedAt: string
+}
+
+export type CreateTicketRequestDataTypes = {
+  title: string
+  description: string
+  status: string
+  updatedAt: string
+}
+
+export type BoardDataTypes = {
+  boardStatus: string
+  tickets: TicketDataTypes[]
+}

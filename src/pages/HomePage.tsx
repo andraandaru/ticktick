@@ -1,13 +1,33 @@
 import { PlusIcon, ViewBoardsIcon } from "@heroicons/react/outline"
-import BaseLayout from "../components/Layouts/BaseLayout"
+import { useCallback, useEffect, useState } from "react"
 import Board from "../components/Board"
 import Card from "../components/Card"
-import CreateTicketModal from "../components/Modal/CreateTicketModal"
-import { useState } from "react"
 import withAuth from "../components/HOC/withAuth"
+import BaseLayout from "../components/Layouts/BaseLayout"
+import CreateTicketModal from "../components/Modal/CreateTicketModal"
+import { useModal } from "../contexts/modal"
+import { TicketService } from "../services/TicketService"
+import { BoardDataTypes } from "../types"
 
 const HomePage = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [boards, setBoards] = useState<BoardDataTypes[]>([])
+
+  const { onOpen, isOpen, onClose } = useModal()
+
+  const loadBoards = useCallback(async () => {
+    const boards = await TicketService.getTickets()
+    setBoards(boards)
+  }, [])
+
+  const handleClose = () => {
+    loadBoards()
+    onClose()
+  }
+
+  useEffect(() => {
+    loadBoards()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <BaseLayout>
@@ -22,7 +42,7 @@ const HomePage = () => {
           </h4>
           <button
             className="flex w-44 items-center justify-around rounded-md bg-blue-700 p-2 text-sm font-semibold text-slate-200 md:w-48 md:text-lg"
-            onClick={() => setIsModalOpen(true)}
+            onClick={onOpen}
           >
             Add a New Ticket{" "}
             <span>
@@ -32,20 +52,16 @@ const HomePage = () => {
         </div>
         {/* Board Column */}
         <div className="my-5 grid flex-1 gap-5 lg:grid-cols-3">
-          <Board status="Open">
-            <Card />
-            <Card />
-          </Board>
-          <Board status="In Progress">
-            <Card />
-          </Board>
-          <Board status="Completed">
-            <Card />
-            <Card />
-          </Board>
+          {boards.map((board, idx) => (
+            <Board key={idx} status={board.boardStatus}>
+              {board.tickets.map((ticket) => (
+                <Card key={ticket.id} data={ticket} />
+              ))}
+            </Board>
+          ))}
         </div>
       </div>
-      <CreateTicketModal isOpen={isModalOpen} handleClose={() => setIsModalOpen(false)} />
+      <CreateTicketModal isOpen={isOpen} handleClose={handleClose} />
     </BaseLayout>
   )
 }
