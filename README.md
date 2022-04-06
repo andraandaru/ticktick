@@ -2,6 +2,10 @@
 
 TickTick.IO - A Simple Ticketing Tool
 
+## Preview
+
+Preview the example live on [https://ticktick.vercel.app/](https://ticktick.vercel.app/)
+
 ## The Project Use
 
 1. ReactJS (Create React App) with Typescript [https://create-react-app.dev/](https://create-react-app.dev/)
