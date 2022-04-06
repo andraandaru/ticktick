@@ -10,6 +10,10 @@ type TicketFormContextTypes = {
   onSubmit: () => void
   onClose: () => void
   isLoading: boolean
+  formErr: {
+    title: boolean
+    description: boolean
+  }
 }
 
 export const TicketFormContext = createContext<TicketFormContextTypes>({
@@ -20,5 +24,9 @@ export const TicketFormContext = createContext<TicketFormContextTypes>({
   onChangeStatus: (value: string) => {},
   onSubmit: () => {},
   onClose: () => {},
-  isLoading: false
+  isLoading: false,
+  formErr: {
+    title: false,
+    description: false,
+  },
 })

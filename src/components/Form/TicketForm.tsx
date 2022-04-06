@@ -3,6 +3,7 @@ import { CheckIcon } from "@heroicons/react/outline"
 import classNames from "classnames"
 import { Fragment, useContext, useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { toast } from "react-toastify"
 import { TicketFormContext } from "../../contexts/ticketForm"
 import { TicketService } from "../../services/TicketService"
 import { TicketDataTypes } from "../../types"
@@ -22,6 +23,10 @@ export const TicketForm = ({
 }) => {
   const [ticket, setTicket] = useState<TicketDataTypes>(initialData)
   const [isLoading, setIsLoading] = useState(false)
+  const [formErr, setFormErr] = useState({
+    title: false,
+    description: false,
+  })
   const navigate = useNavigate()
 
   const onChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,6 +50,15 @@ export const TicketForm = ({
     try {
       setIsLoading(true)
       if (type === "submit") {
+        if (ticket.title === "" || ticket.description === "") {
+          toast.error("Please fill all fields")
+          setIsLoading(false)
+          setFormErr({
+            title: ticket.title === "",
+            description: ticket.description === "",
+          })
+          return
+        }
         const requestData = {
           title: ticket.title,
           description: ticket.description,
@@ -53,14 +67,31 @@ export const TicketForm = ({
         }
         await TicketService.createTicket(requestData)
         setIsLoading(false)
+        setFormErr({
+          title: false,
+          description: false,
+        })
         handleCloseModal && handleCloseModal()
       } else if (type === "update") {
+        if (ticket.title === "" || ticket.description === "") {
+          toast.error("Please fill all fields")
+          setIsLoading(false)
+          setFormErr({
+            title: ticket.title === "",
+            description: ticket.description === "",
+          })
+          return
+        }
         const updatedTicket = {
           ...ticket,
           updatedAt: getCurrentISOString(),
         }
         await TicketService.updateTicketById(ticket.id, updatedTicket)
         setIsLoading(false)
+        setFormErr({
+          title: false,
+          description: false,
+        })
         navigate("/")
       }
     } catch (err) {
@@ -88,6 +119,7 @@ export const TicketForm = ({
         onSubmit,
         onClose,
         isLoading,
+        formErr,
       }}
     >
       <TicketFormComponent />
@@ -106,8 +138,12 @@ const TicketFormComponent = () => {
     onChangeStatus,
     onClose,
     isLoading,
+    formErr,
   } = ticketFormContext
   const [lastTicketStatus] = useState(ticket.status)
+
+  const inputClasses =
+    "mb-3 w-full rounded-md border-2 border-slate-400 px-3 py-2.5 focus:border-2 focus:border-blue-800 focus:outline-none"
 
   const secondaryBtn =
     "mt-2 w-48 rounded-md border border-transparent bg-pink-700 px-4 py-2 font-medium text-white shadow-sm hover:bg-pink-800 focus:outline-none focus:ring-1 focus:ring-pink-900 focus:ring-offset-2"
@@ -118,20 +154,32 @@ const TicketFormComponent = () => {
   return (
     <Fragment>
       <label htmlFor="title" className="flex flex-col">
-        Title
+        <div className="flex">
+          Title <span className="ml-1 text-pink-700">*</span>
+        </div>
         <input
           id="title"
           type="text"
-          className="mb-3 w-full rounded-md border-2 border-slate-400 px-3 py-2.5 focus:border-2 focus:border-blue-800 focus:outline-none"
+          className={classNames(inputClasses, {
+            "cursor-not-allowed opacity-50": isLoading,
+            "border-pink-600": formErr.title,
+          })}
+          disabled={isLoading}
           onChange={onChangeTitle}
           value={ticket.title}
         />
       </label>
       <label htmlFor="description" className="flex flex-col">
-        Description
+        <div className="flex">
+          Description <span className="ml-1 text-pink-700">*</span>
+        </div>
         <textarea
           id="desc"
-          className="mb-3 w-full rounded-md border-2 border-slate-400 px-3 py-2.5 focus:border-2 focus:border-blue-800 focus:outline-none"
+          className={classNames(inputClasses, {
+            "cursor-not-allowed opacity-50": isLoading,
+            "border-pink-600": formErr.description,
+          })}
+          disabled={isLoading}
           onChange={onChangeDesc}
           value={ticket.description}
         />
@@ -152,6 +200,7 @@ const TicketFormComponent = () => {
                           "ring-2 ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-300":
                             active,
                           "bg-blue-800 text-white": checked,
+                          "cursor-not-allowed opacity-50": isLoading,
                         }
                       )
                     }
@@ -187,7 +236,13 @@ const TicketFormComponent = () => {
         </RadioGroup>
       </div>
       <div className="mt-4 flex justify-end space-x-2">
-        <button className={secondaryBtn} onClick={onClose}>
+        <button
+          className={classNames(secondaryBtn, {
+            "cursor-not-allowed opacity-50": isLoading,
+          })}
+          onClick={onClose}
+          disabled={isLoading}
+        >
           Cancel
         </button>
         <button
@@ -195,6 +250,7 @@ const TicketFormComponent = () => {
             "cursor-not-allowed opacity-50": isLoading,
           })}
           onClick={onSubmit}
+          disabled={isLoading}
         >
           {isLoading && <CircleLoading />}
           {isLoading ? "Please Wait ..." : type}

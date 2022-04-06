@@ -1,6 +1,6 @@
-import { AxiosResponse } from "axios"
+import { Axios, AxiosResponse } from "axios"
 import { TICKET_ENDPOINT } from "../constants/api-constants"
-import { CreateTicketRequestDataTypes, TicketDataTypes } from "../types"
+import { CreateTicketRequestDataTypes, TicketDataTypes, BoardDataTypes } from "../types"
 import { callToAPI } from "../utils/api"
 
 const api = callToAPI()
@@ -10,7 +10,7 @@ export const TicketService = {
     try {
       const response: AxiosResponse<TicketDataTypes[]> = await api.get(`/${TICKET_ENDPOINT}/`)
       const responseData = response.data
-      const transpilledData = [
+      const transpilledData: BoardDataTypes[] = [
         {
           boardStatus: "Open",
           tickets: responseData.filter((ticket) => ticket.status === "Open"),

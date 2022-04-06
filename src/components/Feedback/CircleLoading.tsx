@@ -1,7 +1,20 @@
-const CircleLoading = () => {
+import classNames from "classnames"
+
+type CircleLoadingProps = {
+  variant?: "default" | "inverted"
+  size?: "sm" | "md" | "lg"
+}
+
+const CircleLoading = ({ variant = "default", size = "md" }: CircleLoadingProps) => {
   return (
     <svg
-      className="-ml-1 mr-3 h-5 w-5 animate-spin text-white"
+      className={classNames("-ml-1 mr-3 animate-spin ", {
+        "h-5 w-5 text-white": variant === "default",
+        "text-black": variant === "inverted",
+        "h-3 w-3": size === "sm",
+        "h-5 w-5": size === "md",
+        "h-8 w-8": size === "lg",
+      })}
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
