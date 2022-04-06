@@ -1,16 +1,9 @@
-import { RadioGroup } from "@headlessui/react"
-import { CheckIcon, ClipboardIcon } from "@heroicons/react/outline"
-import classNames from "classnames"
-import { useState } from "react"
+import { ClipboardIcon } from "@heroicons/react/outline"
 import TicketForm from "../components/Form/TicketForm"
 import withAuth from "../components/HOC/withAuth"
 import BaseLayout from "../components/Layouts/BaseLayout"
 
-const statuses = ["Open", "In Progress", "Completed"]
-
 const TicketDetailPage = () => {
-  const [selected, setSelected] = useState("Open")
-
   return (
     <BaseLayout>
       <div className="container mx-auto my-4 flex max-w-3xl flex-1 flex-col justify-center p-3">
