@@ -1,46 +1,48 @@
-# Getting Started with Create React App
+# TickTick.IO - Simple Ticketing Tool App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+TickTick.IO - A Simple Ticketing Tool
 
-## Available Scripts
+## The Project Use
 
-In the project directory, you can run:
+1. ReactJS (Create React App) with Typescript [https://create-react-app.dev/](https://create-react-app.dev/)
+2. Tailwind CSS [https://tailwindcss.com/](https://tailwindcss.com/)
+3. Headless UI [https://headlessui.dev/](https://headlessui.dev/)
+4. React Beautiful DND [https://github.com/atlassian/react-beautiful-dnd](https://github.com/atlassian/react-beautiful-dnd)
+5. Axios [https://axios-http.com/](https://axios-http.com/)
+6. React Router DOM [https://reactrouter.com/](https://reactrouter.com/)
+7. React Toastify [https://fkhadra.github.io/react-toastify/introduction/](https://fkhadra.github.io/react-toastify/introduction/)
 
-### `yarn start`
+# Getting Started
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+To get started running the project locally, please follow the steps below.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+First, clone the repository.
 
-### `yarn test`
+```bash
+git clone https://github.com/andraandaru/ticktick.git
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Then, install dependencies and fetch data to your local machine. **Note that the project use Yarn, not npm.**
 
-### `yarn build`
+```bash
+cd ticktick
+yarn install
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Then, create environment variable by create a **.env.local** file in the root of project and insert the following format
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```env
+REACT_APP_API_BASE_URL=YOUR_API_BASE_URL
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Notes: YOUR_API_BASE_URL === https://xxxxxx.mockapi.io
+Notes: Change YOUR_API_BASE_URL with API Base URL that you can get it from [https://mockapi.io](https://mockapi.io)
+Notes: You can also clone from [https://mockapi.io/clone/624af96344505084bc49c394](https://mockapi.io/clone/624af96344505084bc49c394)
 
-### `yarn eject`
+Finally, run the development server.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```bash
+yarn start
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
