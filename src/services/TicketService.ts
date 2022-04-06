@@ -1,6 +1,6 @@
-import { Axios, AxiosResponse } from "axios"
 import { TICKET_ENDPOINT } from "../constants/api-constants"
-import { CreateTicketRequestDataTypes, TicketDataTypes, BoardDataTypes } from "../types"
+import { BOARD_COMPLETED, BOARD_IN_PROGRESS, BOARD_OPEN } from "../constants/board-constants"
+import { BoardDataTypes, CreateTicketRequestDataTypes, TicketDataTypes } from "../types"
 import { callToAPI } from "../utils/api"
 
 const api = callToAPI()
@@ -8,20 +8,19 @@ const api = callToAPI()
 export const TicketService = {
   getTickets: async () => {
     try {
-      const response: AxiosResponse<TicketDataTypes[]> = await api.get(`/${TICKET_ENDPOINT}/`)
-      const responseData = response.data
+      const response: TicketDataTypes[] = await api.get(`/${TICKET_ENDPOINT}/`)
       const transpilledData: BoardDataTypes[] = [
         {
-          boardStatus: "Open",
-          tickets: responseData.filter((ticket) => ticket.status === "Open"),
+          boardStatus: BOARD_OPEN,
+          tickets: response.filter((ticket) => ticket.status === BOARD_OPEN),
         },
         {
-          boardStatus: "In Progress",
-          tickets: responseData.filter((ticket) => ticket.status === "In Progress"),
+          boardStatus: BOARD_IN_PROGRESS,
+          tickets: response.filter((ticket) => ticket.status === BOARD_IN_PROGRESS),
         },
         {
-          boardStatus: "Completed",
-          tickets: responseData.filter((ticket) => ticket.status === "Completed"),
+          boardStatus: BOARD_COMPLETED,
+          tickets: response.filter((ticket) => ticket.status === BOARD_COMPLETED),
         },
       ]
       return transpilledData
@@ -31,30 +30,24 @@ export const TicketService = {
   },
   getTicketById: async (id: string) => {
     try {
-      const response: AxiosResponse<TicketDataTypes> = await api.get(`/${TICKET_ENDPOINT}/${id}`)
-      const responseData = response.data
-      return responseData
+      const response: TicketDataTypes = await api.get(`/${TICKET_ENDPOINT}/${id}`)
+      return response
     } catch (err) {
       throw err
     }
   },
   updateTicketById: async (id: string, data: TicketDataTypes) => {
     try {
-      const response: AxiosResponse<TicketDataTypes> = await api.put(
-        `/${TICKET_ENDPOINT}/${id}`,
-        data
-      )
-      const responseData = response.data
-      return responseData
+      const response: TicketDataTypes = await api.put(`/${TICKET_ENDPOINT}/${id}`, data)
+      return response
     } catch (err) {
       throw err
     }
   },
   createTicket: async (data: CreateTicketRequestDataTypes) => {
     try {
-      const response: AxiosResponse<TicketDataTypes> = await api.post(`/${TICKET_ENDPOINT}/`, data)
-      const responseData = response.data
-      return responseData
+      const response: TicketDataTypes = await api.post(`/${TICKET_ENDPOINT}/`, data)
+      return response
     } catch (err) {
       throw err
     }

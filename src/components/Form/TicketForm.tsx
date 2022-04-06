@@ -2,132 +2,14 @@ import { RadioGroup } from "@headlessui/react"
 import { CheckIcon } from "@heroicons/react/outline"
 import classNames from "classnames"
 import { Fragment, useContext, useState } from "react"
-import { useNavigate } from "react-router-dom"
-import { toast } from "react-toastify"
-import { TicketFormContext } from "../../contexts/ticketForm"
-import { TicketService } from "../../services/TicketService"
-import { TicketDataTypes } from "../../types"
-import { getCurrentISOString } from "../../utils/common"
+import { commonInputClasses, primaryBtnClasses, secondaryBtnClasses } from "../../classes/common"
+import { BOARD_COMPLETED, BOARD_IN_PROGRESS, BOARD_OPEN } from "../../constants/board-constants"
+import { TicketFormContext } from "../../contexts/TicketFormContext"
 import CircleLoading from "../Feedback/CircleLoading"
 
-const statuses: string[] = ["Open", "In Progress", "Completed"]
+const statuses: string[] = [BOARD_OPEN, BOARD_IN_PROGRESS, BOARD_COMPLETED]
 
-export const TicketForm = ({
-  initialData,
-  type,
-  handleCloseModal,
-}: {
-  initialData: TicketDataTypes
-  type: string
-  handleCloseModal?: () => void
-}) => {
-  const [ticket, setTicket] = useState<TicketDataTypes>(initialData)
-  const [isLoading, setIsLoading] = useState(false)
-  const [formErr, setFormErr] = useState({
-    title: false,
-    description: false,
-  })
-  const navigate = useNavigate()
-
-  const onChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value
-    setTicket((prevState) => ({ ...prevState, title: value }))
-  }
-
-  const onChangeDesc = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const value = e.target.value
-    setTicket((prevState) => ({ ...prevState, description: value }))
-  }
-
-  const onChangeStatus = (value: string) => {
-    setTicket((prevState) => ({
-      ...prevState,
-      status: value,
-    }))
-  }
-
-  const onSubmit = async () => {
-    try {
-      setIsLoading(true)
-      if (type === "submit") {
-        if (ticket.title === "" || ticket.description === "") {
-          toast.error("Please fill all fields")
-          setIsLoading(false)
-          setFormErr({
-            title: ticket.title === "",
-            description: ticket.description === "",
-          })
-          return
-        }
-        const requestData = {
-          title: ticket.title,
-          description: ticket.description,
-          status: ticket.status,
-          updatedAt: getCurrentISOString(),
-        }
-        await TicketService.createTicket(requestData)
-        setIsLoading(false)
-        setFormErr({
-          title: false,
-          description: false,
-        })
-        handleCloseModal && handleCloseModal()
-      } else if (type === "update") {
-        if (ticket.title === "" || ticket.description === "") {
-          toast.error("Please fill all fields")
-          setIsLoading(false)
-          setFormErr({
-            title: ticket.title === "",
-            description: ticket.description === "",
-          })
-          return
-        }
-        const updatedTicket = {
-          ...ticket,
-          updatedAt: getCurrentISOString(),
-        }
-        await TicketService.updateTicketById(ticket.id, updatedTicket)
-        setIsLoading(false)
-        setFormErr({
-          title: false,
-          description: false,
-        })
-        navigate("/")
-      }
-    } catch (err) {
-      setIsLoading(false)
-      throw err
-    }
-  }
-
-  const onClose = () => {
-    if (type === "submit") {
-      handleCloseModal && handleCloseModal()
-    } else if (type === "update") {
-      navigate(-1)
-    }
-  }
-
-  return (
-    <TicketFormContext.Provider
-      value={{
-        ticket,
-        type,
-        onChangeTitle,
-        onChangeDesc,
-        onChangeStatus,
-        onSubmit,
-        onClose,
-        isLoading,
-        formErr,
-      }}
-    >
-      <TicketFormComponent />
-    </TicketFormContext.Provider>
-  )
-}
-
-const TicketFormComponent = () => {
+const TicketForm = () => {
   const ticketFormContext = useContext(TicketFormContext)
   const {
     ticket,
@@ -142,15 +24,6 @@ const TicketFormComponent = () => {
   } = ticketFormContext
   const [lastTicketStatus] = useState(ticket.status)
 
-  const inputClasses =
-    "mb-3 w-full rounded-md border-2 border-slate-400 px-3 py-2.5 focus:border-2 focus:border-blue-800 focus:outline-none"
-
-  const secondaryBtn =
-    "mt-2 w-48 rounded-md border border-transparent bg-pink-700 px-4 py-2 font-medium text-white shadow-sm hover:bg-pink-800 focus:outline-none focus:ring-1 focus:ring-pink-900 focus:ring-offset-2"
-
-  const primaryBtn =
-    "mt-2 w-48 flex items-center justify-center rounded-md border border-transparent bg-blue-700 px-4 py-2 font-medium capitalize text-white shadow-sm hover:bg-blue-800 focus:outline-none focus:ring-1 focus:ring-blue-900 focus:ring-offset-2"
-
   return (
     <Fragment>
       <label htmlFor="title" className="flex flex-col">
@@ -160,7 +33,7 @@ const TicketFormComponent = () => {
         <input
           id="title"
           type="text"
-          className={classNames(inputClasses, {
+          className={classNames(commonInputClasses, {
             "cursor-not-allowed opacity-50": isLoading,
             "border-pink-600": formErr.title,
           })}
@@ -169,13 +42,14 @@ const TicketFormComponent = () => {
           value={ticket.title}
         />
       </label>
+
       <label htmlFor="description" className="flex flex-col">
         <div className="flex">
           Description <span className="ml-1 text-pink-700">*</span>
         </div>
         <textarea
           id="desc"
-          className={classNames(inputClasses, {
+          className={classNames(commonInputClasses, {
             "cursor-not-allowed opacity-50": isLoading,
             "border-pink-600": formErr.description,
           })}
@@ -184,13 +58,14 @@ const TicketFormComponent = () => {
           value={ticket.description}
         />
       </label>
+
       <div className="mx-auto w-full">
         <RadioGroup value={ticket?.status} onChange={onChangeStatus}>
           <RadioGroup.Label>Status</RadioGroup.Label>
           <div className="space-y-2">
             {statuses.map((status) => (
               <Fragment key={status}>
-                {status === "In Progress" && lastTicketStatus === "Completed" ? null : (
+                {status === BOARD_IN_PROGRESS && lastTicketStatus === BOARD_COMPLETED ? null : (
                   <RadioGroup.Option
                     value={status}
                     className={({ active, checked }) =>
@@ -235,9 +110,10 @@ const TicketFormComponent = () => {
           </div>
         </RadioGroup>
       </div>
+      
       <div className="mt-4 flex justify-end space-x-2">
         <button
-          className={classNames(secondaryBtn, {
+          className={classNames(secondaryBtnClasses, {
             "cursor-not-allowed opacity-50": isLoading,
           })}
           onClick={onClose}
@@ -246,7 +122,7 @@ const TicketFormComponent = () => {
           Cancel
         </button>
         <button
-          className={classNames(primaryBtn, {
+          className={classNames(primaryBtnClasses, {
             "cursor-not-allowed opacity-50": isLoading,
           })}
           onClick={onSubmit}

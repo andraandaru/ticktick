@@ -1,6 +1,6 @@
 import { FC, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-import { useAuth } from "../../contexts/auth"
+import { useAuth } from "../../hooks/useAuth"
 
 type withAuthTypes = (Component: FC) => FC
 

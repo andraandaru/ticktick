@@ -1,24 +1,22 @@
-import { AxiosResponse } from "axios"
+import bcrypt from "bcryptjs"
 import { toast } from "react-toastify"
 import { USER_ENDPOINT } from "../constants/api-constants"
 import { LoginRequestDataTypes, LoginResponseDataTypes } from "../types"
 import { callToAPI } from "../utils/api"
-import bcrypt from "bcryptjs"
 
 const api = callToAPI()
 
 export const AuthService = {
   login: async (data: LoginRequestDataTypes) => {
     try {
-      const response: AxiosResponse<LoginResponseDataTypes> = await api.get(
+      const response: LoginResponseDataTypes = await api.get(
         `/${USER_ENDPOINT}?email=${data.email}`
       )
-      const responseData = response.data
-      if (responseData.length === 0) {
+      if (response.length === 0) {
         toast.error("User Not Found")
         throw new Error("User Not Found")
       } else {
-        const user = responseData[0]
+        const user = response[0]
         const comparedPassword = bcrypt.compareSync(data.password, user.password)
         if (comparedPassword) {
           return user

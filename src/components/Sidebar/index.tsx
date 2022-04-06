@@ -1,12 +1,11 @@
 import { HomeIcon, LogoutIcon } from "@heroicons/react/outline"
-import { useAuth } from "../../contexts/auth"
+import { useAuth } from "../../hooks/useAuth"
 
-const Navbar = () => {
+const Sidebar = () => {
   const { logout } = useAuth()
 
   return (
     <header>
-      {/* // bg-gradient-to-r from-cyan-500 to-blue-500 */}
       <div className="fixed inset-y-0 left-0 w-40 border-r-2 px-2 py-8 md:w-64 md:px-4">
         <h1 className="text-center font-logo text-lg font-semibold uppercase text-slate-800 md:text-2xl">
           Ticktick.IO
@@ -33,4 +32,4 @@ const Navbar = () => {
   )
 }
 
-export default Navbar
+export default Sidebar

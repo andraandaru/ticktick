@@ -1,19 +1,14 @@
-import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from "react"
-import { useNavigate, RouteProps, Route } from "react-router-dom"
+import { ReactNode, useCallback, useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
+import { AuthContext } from "../contexts/AuthContext"
 import { AuthService } from "../services/AuthService"
 import { LoginRequestDataTypes } from "../types"
 
-const AuthContextDefault = {
-  isAuthenticated: false,
-  user: "",
-  login: (data: LoginRequestDataTypes) => {},
-  logout: () => {},
-  isLoading: true,
+type AuthProviderTypes = {
+  children: ReactNode
 }
 
-const AuthContext = createContext(AuthContextDefault)
-
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
+export const AuthProvider = ({ children }: AuthProviderTypes) => {
   const navigate = useNavigate()
 
   const [user, setUser] = useState("")
@@ -25,8 +20,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (email) setUser(email)
       setIsLoading(false)
     } catch (err) {
-      sessionStorage.removeItem("user")
       console.log(err)
+      sessionStorage.removeItem("user")
       setUser("")
       setIsLoading(false)
     }
@@ -60,5 +55,3 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     </AuthContext.Provider>
   )
 }
-
-export const useAuth = () => useContext(AuthContext)

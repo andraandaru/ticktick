@@ -1,6 +1,6 @@
 import { ClipboardCheckIcon, ClipboardIcon, ClipboardListIcon } from "@heroicons/react/outline"
 import { FC } from "react"
-import { Droppable } from "react-beautiful-dnd"
+import { BOARD_COMPLETED, BOARD_IN_PROGRESS, BOARD_OPEN } from "../../constants/board-constants"
 
 interface BoardProps {
   status: string
@@ -12,9 +12,9 @@ const Board: FC<BoardProps> = ({ status, children }) => {
       <div>
         <h3 className="flex items-center text-lg font-semibold">
           <span>
-            {status === "Open" && <ClipboardIcon className="mr-2 h-5 w-5" />}
-            {status === "In Progress" && <ClipboardListIcon className="mr-2 h-5 w-5" />}
-            {status === "Completed" && <ClipboardCheckIcon className="mr-2 h-5 w-5" />}
+            {status === BOARD_OPEN && <ClipboardIcon className="mr-2 h-5 w-5" />}
+            {status === BOARD_IN_PROGRESS && <ClipboardListIcon className="mr-2 h-5 w-5" />}
+            {status === BOARD_COMPLETED && <ClipboardCheckIcon className="mr-2 h-5 w-5" />}
           </span>
           {status}
         </h3>

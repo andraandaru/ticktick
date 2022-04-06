@@ -9,11 +9,8 @@ export const callToAPI = () => {
   })
 
   api.interceptors.response.use(async (response) => {
-    // add artificial delay for dev env
-    if (process.env.NODE_ENV === "development") {
-      await delay()
-    }
-    return response
+    await delay()
+    return response.data
   })
 
   return api

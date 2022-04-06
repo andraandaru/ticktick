@@ -1,9 +1,9 @@
 import { ClipboardIcon } from "@heroicons/react/outline"
 import { useCallback, useEffect, useState } from "react"
 import { useLocation, useParams } from "react-router-dom"
-import TicketForm from "../components/Form/TicketForm"
 import withAuth from "../components/HOC/withAuth"
 import BaseLayout from "../components/Layouts/BaseLayout"
+import TicketFormProvider from "../providers/TicketFormProvider"
 import { TicketService } from "../services/TicketService"
 import { TicketDataTypes } from "../types"
 
@@ -41,7 +41,7 @@ const TicketDetailPage = () => {
               <ClipboardIcon className="mr-4 h-6 w-6" />
               <h3 className="text-2xl font-bold">Ticket Detail</h3>
             </div>
-            <TicketForm initialData={ticket} type="update" />
+            <TicketFormProvider initialData={ticket} type="update" />
           </>
         )}
       </div>

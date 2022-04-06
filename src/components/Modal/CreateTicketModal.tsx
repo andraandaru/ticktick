@@ -1,6 +1,7 @@
+import { BOARD_OPEN } from "../../constants/board-constants"
+import TicketFormProvider from "../../providers/TicketFormProvider"
 import { TicketDataTypes } from "../../types"
 import { getCurrentISOString } from "../../utils/common"
-import TicketForm from "../Form/TicketForm"
 import BaseModal from "./BaseModal"
 
 type CreateTicketModalProps = {
@@ -12,7 +13,7 @@ const initialTicketData: TicketDataTypes = {
   id: "",
   title: "",
   description: "",
-  status: "Open",
+  status: BOARD_OPEN,
   createdAt: getCurrentISOString(),
   updatedAt: getCurrentISOString(),
 }
@@ -21,7 +22,7 @@ const CreateTicketModal = ({ isOpen, handleClose }: CreateTicketModalProps) => {
   return (
     <BaseModal title="Create Ticket" isOpen={isOpen} handleClose={handleClose}>
       <div className="mt-2">
-        <TicketForm
+        <TicketFormProvider
           initialData={initialTicketData as TicketDataTypes}
           type="submit"
           handleCloseModal={handleClose}

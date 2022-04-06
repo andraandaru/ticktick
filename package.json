@@ -23,7 +23,6 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "start:server": "json-server --watch ./src/databases/db.json -p2000",
     "build": "react-scripts build",
     "eject": "react-scripts eject"
   },
@@ -46,7 +45,6 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.4.4",
-    "json-server": "^0.17.0",
     "postcss": "^8.4.12",
     "prettier": "^2.6.2",
     "prettier-plugin-tailwindcss": "^0.1.8",
