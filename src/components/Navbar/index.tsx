@@ -1,6 +1,9 @@
 import { HomeIcon, LogoutIcon } from "@heroicons/react/outline"
+import { useAuth } from "../../contexts/auth"
 
 const Navbar = () => {
+  const { logout } = useAuth()
+
   return (
     <header>
       {/* // bg-gradient-to-r from-cyan-500 to-blue-500 */}
@@ -15,7 +18,10 @@ const Navbar = () => {
             </span>
             Dashboard
           </li>
-          <li className="mt-auto flex cursor-pointer items-center rounded-md border-2 border-dotted p-4 text-sm font-bold hover:bg-slate-200 md:text-lg">
+          <li
+            className="mt-auto flex cursor-pointer items-center rounded-md border-2 border-dotted p-4 text-sm font-bold hover:bg-slate-200 md:text-lg"
+            onClick={logout}
+          >
             <span className="pr-2">
               <LogoutIcon className="h-4 w-4 md:h-5 md:w-5" />
             </span>

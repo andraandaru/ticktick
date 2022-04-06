@@ -4,6 +4,7 @@ import Board from "../components/Board"
 import Card from "../components/Card"
 import CreateTicketModal from "../components/Modal/CreateTicketModal"
 import { useState } from "react"
+import withAuth from "../components/HOC/withAuth"
 
 const HomePage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -49,4 +50,4 @@ const HomePage = () => {
   )
 }
 
-export default HomePage
+export default withAuth(HomePage)

@@ -37,8 +37,9 @@ const TicketForm = () => {
                   classNames(
                     "relative flex cursor-pointer rounded-lg border-2 border-slate-400 bg-white px-5 py-4 shadow-md focus:outline-none",
                     {
-                      "ring-2 ring-white ring-opacity-60 ring-offset-2 ring-offset-sky-300": active,
-                      "bg-sky-900 bg-opacity-75 text-white": checked,
+                      "ring-2 ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-300":
+                        active,
+                      "bg-blue-800 text-white": checked,
                     }
                   )
                 }
