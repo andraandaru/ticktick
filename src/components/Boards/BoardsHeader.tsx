@@ -1,5 +1,4 @@
 import { PlusIcon, ViewBoardsIcon } from "@heroicons/react/outline"
-import React from "react"
 
 type BoardsHeaderProps = {
   onOpen: () => void

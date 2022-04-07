@@ -43,12 +43,12 @@ const Boards = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const onDragEnd = async (re: DropResult) => {
-    if (!re.destination) return
-    if (re.destination) {
+  const onDragEnd = async (dropResult: DropResult) => {
+    if (!dropResult.destination) return
+    if (dropResult.destination) {
       if (
-        re.source.droppableId === BOARD_COMPLETED &&
-        re.destination.droppableId === BOARD_IN_PROGRESS
+        dropResult.source.droppableId === BOARD_COMPLETED &&
+        dropResult.destination.droppableId === BOARD_IN_PROGRESS
       ) {
         return toast.error("You can't move a ticket from Completed to In Progress")
       }
@@ -56,18 +56,18 @@ const Boards = () => {
       try {
         let newBoards = boards
         const sourceIndex = newBoards.findIndex(
-          (board) => board.boardStatus === re.source.droppableId
+          (board) => board.boardStatus === dropResult.source.droppableId
         )
         const destinationIndex = newBoards.findIndex(
-          (board) => board.boardStatus === re.destination!.droppableId
+          (board) => board.boardStatus === dropResult.destination!.droppableId
         )
         const dragItem = {
-          ...newBoards[sourceIndex].tickets[re.source.index],
-          status: re.destination.droppableId,
+          ...newBoards[sourceIndex].tickets[dropResult.source.index],
+          status: dropResult.destination.droppableId,
           updatedAt: getCurrentISOString(),
         }
-        newBoards[sourceIndex].tickets.splice(re.source.index, 1)
-        newBoards[destinationIndex].tickets.splice(re.destination.index, 0, dragItem)
+        newBoards[sourceIndex].tickets.splice(dropResult.source.index, 1)
+        newBoards[destinationIndex].tickets.splice(dropResult.destination.index, 0, dragItem)
         setBoards(newBoards)
         await TicketService.updateTicketById(dragItem.id, dragItem)
         setIsLoading(false)
@@ -78,12 +78,12 @@ const Boards = () => {
     }
   }
 
-  const onDragUpdate = (re: DragUpdate) => {
-    if (!re.destination) return
-    if (re.destination) {
+  const onDragUpdate = (dragUpdate: DragUpdate) => {
+    if (!dragUpdate.destination) return
+    if (dragUpdate.destination) {
       if (
-        re.source.droppableId === BOARD_COMPLETED &&
-        re.destination.droppableId === BOARD_IN_PROGRESS
+        dragUpdate.source.droppableId === BOARD_COMPLETED &&
+        dragUpdate.destination.droppableId === BOARD_IN_PROGRESS
       ) {
         setErrDrag(true)
       } else {
